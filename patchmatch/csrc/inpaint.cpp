@@ -1,13 +1,14 @@
 #include <algorithm>
 #include <iostream>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
 #include "matrixmath_wrapper.h"
 
 #include "inpaint.h"
 
 #define HAVE_HIGHGUI 0
+
+#if HAVE_HIGHGUI
+#include <opencv2/highgui.hpp>
+#endif
 
 namespace {
     static std::vector<double> kDistance2Similarity;

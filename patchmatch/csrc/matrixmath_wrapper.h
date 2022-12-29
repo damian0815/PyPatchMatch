@@ -1,6 +1,15 @@
 
 #pragma once
 
+#define OPENCV_BACKEND 1
+#define LINALG_BACKEND 0
+
+#if LINALG_BACKEND
+
+
+
+#elif OPENCV_BACKEND
+
 #include <opencv2/core.hpp>
 
 typedef cv::Mat mmwrap_Matrix;
@@ -15,3 +24,4 @@ inline unsigned char mmwrap_saturate_cast_to_uchar(double x) {
     return ((unsigned)v <= UCHAR_MAX ? v : v > 0 ? UCHAR_MAX : 0);
 }
 
+#endif

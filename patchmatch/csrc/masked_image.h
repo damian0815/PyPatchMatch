@@ -1,6 +1,5 @@
 #pragma once
 
-#include <opencv2/core.hpp>
 #include "matrixmath_wrapper.h"
 
 class MaskedImage {
