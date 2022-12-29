@@ -23,12 +23,12 @@ public:
     }
     NearestNeighborField(const MaskedImage &source, const MaskedImage &target, const PatchDistanceMetric *metric, int max_retry = 20)
         : m_source(source), m_target(target), m_distance_metric(metric) {
-        m_field = cv::Mat(m_source.size(), CV_32SC3);
+        m_field = mmwrap_Matrix(m_source.size(), CV_32SC3);
         _randomize_field(max_retry);
     }
     NearestNeighborField(const MaskedImage &source, const MaskedImage &target, const PatchDistanceMetric *metric, const NearestNeighborField &other, int max_retry = 20)
             : m_source(source), m_target(target), m_distance_metric(metric) {
-        m_field = cv::Mat(m_source.size(), CV_32SC3);
+        m_field = mmwrap_Matrix(m_source.size(), CV_32SC3);
         _initialize_field_from(other, max_retry);
     }
 
@@ -38,10 +38,10 @@ public:
     const MaskedImage &target() const {
         return m_target;
     }
-    inline cv::Size source_size() const {
+    inline mmwrap_Size source_size() const {
         return m_source.size();
     }
-    inline cv::Size target_size() const {
+    inline mmwrap_Size target_size() const {
         return m_target.size();
     }
     inline void set_source(const MaskedImage &source) {
@@ -82,7 +82,7 @@ private:
 
     MaskedImage m_source;
     MaskedImage m_target;
-    cv::Mat m_field;  // { y_target, x_target, distance_scaled }
+    mmwrap_Matrix m_field;  // { y_target, x_target, distance_scaled }
     const PatchDistanceMetric *m_distance_metric;
 };
 
@@ -120,14 +120,14 @@ protected:
 
 class RegularityGuidedPatchDistanceMetricV2 : public PatchDistanceMetric {
 public:
-    RegularityGuidedPatchDistanceMetricV2(int patch_size, cv::Mat ijmap, double weight)
+    RegularityGuidedPatchDistanceMetricV2(int patch_size, mmwrap_Matrix ijmap, double weight)
         : PatchDistanceMetric(patch_size), m_ijmap(ijmap), m_weight(weight) {
 
     }
     virtual int operator ()(const MaskedImage &source, int source_y, int source_x, const MaskedImage &target, int target_y, int target_x) const;
 
 protected:
-    cv::Mat m_ijmap;
+    mmwrap_Matrix m_ijmap;
     double m_width, m_height, m_weight;
 };
 

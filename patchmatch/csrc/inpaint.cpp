@@ -3,6 +3,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include "matrixmath_wrapper.h"
 
 #include "inpaint.h"
 
@@ -26,7 +27,7 @@ namespace {
     }
 
 
-    inline void _weighted_copy(const MaskedImage &source, int ys, int xs, cv::Mat &target, int yt, int xt, double weight) {
+    inline void _weighted_copy(const MaskedImage &source, int ys, int xs, mmwrap_Matrix &target, int yt, int xt, double weight) {
         if (source.is_masked(ys, xs)) return;
         if (source.is_globally_masked(ys, xs)) return;
 
@@ -44,12 +45,12 @@ namespace {
  * This algorithme uses a version proposed by Xavier Philippeau.
  */
 
-Inpainting::Inpainting(cv::Mat image, cv::Mat mask, const PatchDistanceMetric *metric)
+Inpainting::Inpainting(mmwrap_Matrix image, mmwrap_Matrix mask, const PatchDistanceMetric *metric)
     : m_initial(image, mask), m_distance_metric(metric), m_pyramid(), m_source2target(), m_target2source() {
     _initialize_pyramid();
 }
 
-Inpainting::Inpainting(cv::Mat image, cv::Mat mask, cv::Mat global_mask, const PatchDistanceMetric *metric)
+Inpainting::Inpainting(mmwrap_Matrix image, mmwrap_Matrix mask, mmwrap_Matrix global_mask, const PatchDistanceMetric *metric)
     : m_initial(image, mask, global_mask), m_distance_metric(metric), m_pyramid(), m_source2target(), m_target2source() {
     _initialize_pyramid();
 }
@@ -67,7 +68,7 @@ void Inpainting::_initialize_pyramid() {
     }
 }
 
-cv::Mat Inpainting::run(bool verbose, bool verbose_visualize, unsigned int random_seed) {
+mmwrap_Matrix Inpainting::run(bool verbose, bool verbose_visualize, unsigned int random_seed) {
     srand(random_seed);
     const int nr_levels = m_pyramid.size();
 
@@ -92,10 +93,10 @@ cv::Mat Inpainting::run(bool verbose, bool verbose_visualize, unsigned int rando
 #if HAVE_HIGHGUI
         if (verbose_visualize) {
             auto visualize_size = m_initial.size();
-            cv::Mat source_visualize(visualize_size, m_initial.image().type());
+            mmwrap_Matrix source_visualize(visualize_size, m_initial.image().type());
             cv::resize(source.image(), source_visualize, visualize_size);
             cv::imshow("Source", source_visualize);
-            cv::Mat target_visualize(visualize_size, m_initial.image().type());
+            mmwrap_Matrix target_visualize(visualize_size, m_initial.image().type());
             cv::resize(target.image(), target_visualize, visualize_size);
             cv::imshow("Target", target_visualize);
             cv::waitKey(0);
@@ -153,8 +154,8 @@ MaskedImage Inpainting::_expectation_maximization(MaskedImage source, MaskedImag
             new_target = target.clone();
         }
 
-        auto vote = cv::Mat(new_target.size(), CV_64FC4);
-        vote.setTo(cv::Scalar::all(0));
+        auto vote = mmwrap_Matrix(new_target.size(), CV_64FC4);
+        mmwrap_clear(vote);
 
         // Votes for best patch from NNF Source->Target (completeness) and Target->Source (coherence).
         _expectation_step(m_source2target, 1, vote, new_source, upscaled);
@@ -173,7 +174,7 @@ MaskedImage Inpainting::_expectation_maximization(MaskedImage source, MaskedImag
 // Expectation step: vote for best estimations of each pixel.
 void Inpainting::_expectation_step(
     const NearestNeighborField &nnf, bool source2target,
-    cv::Mat &vote, const MaskedImage &source, bool upscaled
+    mmwrap_Matrix &vote, const MaskedImage &source, bool upscaled
 ) {
     auto source_size = nnf.source_size();
     auto target_size = nnf.target_size();
@@ -214,7 +215,7 @@ void Inpainting::_expectation_step(
 }
 
 // Maximization Step: maximum likelihood of target pixel.
-void Inpainting::_maximization_step(MaskedImage &target, const cv::Mat &vote) {
+void Inpainting::_maximization_step(MaskedImage &target, const mmwrap_Matrix &vote) {
     auto target_size = target.size();
     for (int i = 0; i < target_size.height; ++i) {
         for (int j = 0; j < target_size.width; ++j) {
@@ -226,9 +227,9 @@ void Inpainting::_maximization_step(MaskedImage &target, const cv::Mat &vote) {
             }
 
             if (source_ptr[3] > 0) {
-                unsigned char r = cv::saturate_cast<unsigned char>(source_ptr[0] / source_ptr[3]);
-                unsigned char g = cv::saturate_cast<unsigned char>(source_ptr[1] / source_ptr[3]);
-                unsigned char b = cv::saturate_cast<unsigned char>(source_ptr[2] / source_ptr[3]);
+                unsigned char r = mmwrap_saturate_cast_to_uchar(source_ptr[0] / source_ptr[3]);
+                unsigned char g = mmwrap_saturate_cast_to_uchar(source_ptr[1] / source_ptr[3]);
+                unsigned char b = mmwrap_saturate_cast_to_uchar(source_ptr[2] / source_ptr[3]);
                 target_ptr[0] = r, target_ptr[1] = g, target_ptr[2] = b;
             } else {
                 target.set_mask(i, j, 0);

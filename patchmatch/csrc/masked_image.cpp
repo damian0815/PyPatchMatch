@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iostream>
 
-const cv::Size MaskedImage::kDownsampleKernelSize = cv::Size(6, 6);
+const mmwrap_Size MaskedImage::kDownsampleKernelSize = mmwrap_Size(6, 6);
 const int MaskedImage::kDownsampleKernel[6] = {1, 5, 10, 10, 5, 1};
 
 bool MaskedImage::contains_mask(int y, int x, int patch_size) const {
@@ -23,7 +23,7 @@ MaskedImage MaskedImage::downsample() const {
     const auto &kernel = MaskedImage::kDownsampleKernel;
 
     const auto size = this->size();
-    const auto new_size = cv::Size(size.width / 2, size.height / 2);
+    const auto new_size = mmwrap_Size(size.width / 2, size.height / 2);
 
     auto ret = MaskedImage(new_size.width, new_size.height);
     if (!m_global_mask.empty()) ret.init_global_mask_mat();
@@ -98,7 +98,7 @@ MaskedImage MaskedImage::upsample(int new_w, int new_h) const {
     return ret;
 }
 
-MaskedImage MaskedImage::upsample(int new_w, int new_h, const cv::Mat &new_global_mask) const {
+MaskedImage MaskedImage::upsample(int new_w, int new_h, const mmwrap_Matrix &new_global_mask) const {
     auto ret = upsample(new_w, new_h);
     ret.set_global_mask_mat(new_global_mask);
     return ret;
@@ -110,10 +110,10 @@ void MaskedImage::compute_image_gradients() {
     }
 
     const auto size = m_image.size();
-    m_image_grady = cv::Mat(size, CV_8UC3);
-    m_image_gradx = cv::Mat(size, CV_8UC3);
-    m_image_grady = cv::Scalar::all(0);
-    m_image_gradx = cv::Scalar::all(0);
+    m_image_grady = mmwrap_Matrix(size, CV_8UC3);
+    m_image_gradx = mmwrap_Matrix(size, CV_8UC3);
+    mmwrap_clear(m_image_grady);
+    mmwrap_clear(m_image_gradx);
 
     for (int i = 1; i < size.height - 1; ++i) {
         const auto *ptr = m_image.ptr<unsigned char>(i, 0);

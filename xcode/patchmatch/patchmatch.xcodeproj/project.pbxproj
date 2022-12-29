@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		2DE97EE6295DC90E00914CE1 /* libopencv_core.4.6.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE97EDC295DC86F00914CE1 /* libopencv_core.4.6.0.dylib */; };
 		2DE97EE8295DC96F00914CE1 /* linalg.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DE97EE7295DC96F00914CE1 /* linalg.h */; };
+		2DE97EE9295DCED900914CE1 /* matrix_math.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB59294FA20C00E061D5 /* matrix_math.h */; };
+		2DE97EEA295DCED900914CE1 /* linalg.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE97EE7295DC96F00914CE1 /* linalg.h */; };
+		2DE97EEB295DCED900914CE1 /* inpaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB4C294FA12800E061D5 /* inpaint.cpp */; };
+		2DE97EEC295DCED900914CE1 /* inpaint.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB51294FA12800E061D5 /* inpaint.h */; };
+		2DE97EED295DCED900914CE1 /* masked_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB4E294FA12800E061D5 /* masked_image.cpp */; };
+		2DE97EEE295DCED900914CE1 /* masked_image.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB4D294FA12800E061D5 /* masked_image.h */; };
+		2DE97EEF295DCED900914CE1 /* nnf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB50294FA12800E061D5 /* nnf.cpp */; };
+		2DE97EF0295DCED900914CE1 /* nnf.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB52294FA12800E061D5 /* nnf.h */; };
+		2DE97EF1295DCED900914CE1 /* matrixmath_wrapper.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB53294FA12800E061D5 /* matrixmath_wrapper.h */; };
+		2DE97EF2295DCED900914CE1 /* pyinterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB54294FA12800E061D5 /* pyinterface.cpp */; };
+		2DE97EF3295DCED900914CE1 /* pyinterface.h in Sources */ = {isa = PBXBuildFile; fileRef = 2DE1CB4F294FA12800E061D5 /* pyinterface.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,7 +30,7 @@
 		2DE1CB50294FA12800E061D5 /* nnf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nnf.cpp; path = ../../../patchmatch/csrc/nnf.cpp; sourceTree = "<group>"; };
 		2DE1CB51294FA12800E061D5 /* inpaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inpaint.h; path = ../../../patchmatch/csrc/inpaint.h; sourceTree = "<group>"; };
 		2DE1CB52294FA12800E061D5 /* nnf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nnf.h; path = ../../../patchmatch/csrc/nnf.h; sourceTree = "<group>"; };
-		2DE1CB53294FA12800E061D5 /* opencv_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = opencv_wrapper.h; path = ../../../patchmatch/csrc/opencv_wrapper.h; sourceTree = "<group>"; };
+		2DE1CB53294FA12800E061D5 /* matrixmath_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrixmath_wrapper.h; path = ../../../patchmatch/csrc/matrixmath_wrapper.h; sourceTree = "<group>"; };
 		2DE1CB54294FA12800E061D5 /* pyinterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pyinterface.cpp; path = ../../../patchmatch/csrc/pyinterface.cpp; sourceTree = "<group>"; };
 		2DE1CB59294FA20C00E061D5 /* matrix_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix_math.h; sourceTree = "<group>"; };
 		2DE97EDC295DC86F00914CE1 /* libopencv_core.4.6.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.4.6.0.dylib; path = ../../../../../../opt/homebrew/Cellar/opencv/4.6.0_1/lib/libopencv_core.4.6.0.dylib; sourceTree = "<group>"; };
@@ -67,7 +78,7 @@
 				2DE1CB4D294FA12800E061D5 /* masked_image.h */,
 				2DE1CB50294FA12800E061D5 /* nnf.cpp */,
 				2DE1CB52294FA12800E061D5 /* nnf.h */,
-				2DE1CB53294FA12800E061D5 /* opencv_wrapper.h */,
+				2DE1CB53294FA12800E061D5 /* matrixmath_wrapper.h */,
 				2DE1CB54294FA12800E061D5 /* pyinterface.cpp */,
 				2DE1CB4F294FA12800E061D5 /* pyinterface.h */,
 			);
@@ -158,6 +169,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DE97EE9295DCED900914CE1 /* matrix_math.h in Sources */,
+				2DE97EEA295DCED900914CE1 /* linalg.h in Sources */,
+				2DE97EEB295DCED900914CE1 /* inpaint.cpp in Sources */,
+				2DE97EEC295DCED900914CE1 /* inpaint.h in Sources */,
+				2DE97EED295DCED900914CE1 /* masked_image.cpp in Sources */,
+				2DE97EEE295DCED900914CE1 /* masked_image.h in Sources */,
+				2DE97EEF295DCED900914CE1 /* nnf.cpp in Sources */,
+				2DE97EF0295DCED900914CE1 /* nnf.h in Sources */,
+				2DE97EF1295DCED900914CE1 /* matrixmath_wrapper.h in Sources */,
+				2DE97EF2295DCED900914CE1 /* pyinterface.cpp in Sources */,
+				2DE97EF3295DCED900914CE1 /* pyinterface.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

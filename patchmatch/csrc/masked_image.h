@@ -1,33 +1,30 @@
 #pragma once
 
 #include <opencv2/core.hpp>
+#include "matrixmath_wrapper.h"
 
 class MaskedImage {
 public:
     MaskedImage() : m_image(), m_mask(), m_global_mask(), m_image_grady(), m_image_gradx(), m_image_grad_computed(false) {
         // pass
     }
-    MaskedImage(cv::Mat image, cv::Mat mask) : m_image(image), m_mask(mask), m_image_grad_computed(false) {
+    MaskedImage(mmwrap_Matrix image, mmwrap_Matrix mask) : m_image(image), m_mask(mask), m_image_grad_computed(false) {
         // pass
     }
-    MaskedImage(cv::Mat image, cv::Mat mask, cv::Mat global_mask) : m_image(image), m_mask(mask), m_global_mask(global_mask), m_image_grad_computed(false) {
+    MaskedImage(mmwrap_Matrix image, mmwrap_Matrix mask, mmwrap_Matrix global_mask) : m_image(image), m_mask(mask), m_global_mask(global_mask), m_image_grad_computed(false) {
         // pass
     }
-    MaskedImage(cv::Mat image, cv::Mat mask, cv::Mat global_mask, cv::Mat grady, cv::Mat gradx, bool grad_computed) :
+    MaskedImage(mmwrap_Matrix image, mmwrap_Matrix mask, mmwrap_Matrix global_mask, mmwrap_Matrix grady, mmwrap_Matrix gradx, bool grad_computed) :
         m_image(image), m_mask(mask), m_global_mask(global_mask),
         m_image_grady(grady), m_image_gradx(gradx), m_image_grad_computed(grad_computed) {
         // pass
     }
     MaskedImage(int width, int height) : m_global_mask(), m_image_grady(), m_image_gradx() {
-//        m_image = matMakeImage(width, height, 3);
-//        matClear(m_mask);
-        m_image = cv::Mat(cv::Size(width, height), CV_8UC3);
-        m_image = cv::Scalar::all(0);
+        m_image = mmwrap_Matrix(mmwrap_Size(width, height), CV_8UC3);
+        mmwrap_clear(m_image);
 
-//        m_image = matMakeImage(width, height, 1);
-//        matClear(m_mask);
-        m_mask = cv::Mat(cv::Size(width, height), CV_8U);
-        m_mask = cv::Scalar::all(0);
+        m_mask = mmwrap_Matrix(mmwrap_Size(width, height), CV_8U);
+        mmwrap_clear(m_image);
     }
     inline MaskedImage clone() {
         return MaskedImage(
@@ -36,32 +33,32 @@ public:
         );
     }
 
-    inline cv::Size size() const {
+    inline mmwrap_Size size() const {
         return m_image.size();
     }
-    inline const cv::Mat &image() const {
+    inline const mmwrap_Matrix &image() const {
         return m_image;
     }
-    inline const cv::Mat &mask() const {
+    inline const mmwrap_Matrix &mask() const {
         return m_mask;
     }
-    inline const cv::Mat &global_mask() const {
+    inline const mmwrap_Matrix &global_mask() const {
         return m_global_mask;
     }
-    inline const cv::Mat &grady() const {
+    inline const mmwrap_Matrix &grady() const {
         assert(m_image_grad_computed);
         return m_image_grady;
     }
-    inline const cv::Mat &gradx() const {
+    inline const mmwrap_Matrix &gradx() const {
         assert(m_image_grad_computed);
         return m_image_gradx;
     }
 
     inline void init_global_mask_mat() {
-        m_global_mask = cv::Mat(m_mask.size(), CV_8U);
-        m_global_mask.setTo(cv::Scalar(0));
+        m_global_mask = mmwrap_Matrix(m_mask.size(), CV_8U);
+        mmwrap_clear(m_global_mask);
     }
-    inline void set_global_mask_mat(const cv::Mat &other) {
+    inline void set_global_mask_mat(const mmwrap_Matrix &other) {
         m_global_mask = other;
     }
 
@@ -78,7 +75,7 @@ public:
         m_global_mask.at<unsigned char>(y, x) = static_cast<unsigned char>(value);
     }
     inline void clear_mask() {
-        m_mask.setTo(cv::Scalar(0));
+        mmwrap_clear(m_mask);
     }
 
     inline const unsigned char *get_image(int y, int x) const {
@@ -98,19 +95,19 @@ public:
     bool contains_mask(int y, int x, int patch_size) const;
     MaskedImage downsample() const;
     MaskedImage upsample(int new_w, int new_h) const;
-    MaskedImage upsample(int new_w, int new_h, const cv::Mat &new_global_mask) const;
+    MaskedImage upsample(int new_w, int new_h, const mmwrap_Matrix &new_global_mask) const;
     void compute_image_gradients();
     void compute_image_gradients() const;
 
-    static const cv::Size kDownsampleKernelSize;
+    static const mmwrap_Size kDownsampleKernelSize;
     static const int kDownsampleKernel[6];
 
 private:
-	cv::Mat m_image;
-	cv::Mat m_mask;
-    cv::Mat m_global_mask;
-    cv::Mat m_image_grady;
-    cv::Mat m_image_gradx;
+	mmwrap_Matrix m_image;
+	mmwrap_Matrix m_mask;
+    mmwrap_Matrix m_global_mask;
+    mmwrap_Matrix m_image_grady;
+    mmwrap_Matrix m_image_gradx;
     bool m_image_grad_computed = false;
 };
 
