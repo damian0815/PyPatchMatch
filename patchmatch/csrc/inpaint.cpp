@@ -6,6 +6,8 @@
 
 #include "inpaint.h"
 
+#define HAVE_HIGHGUI 0
+
 namespace {
     static std::vector<double> kDistance2Similarity;
 
@@ -87,6 +89,7 @@ cv::Mat Inpainting::run(bool verbose, bool verbose_visualize, unsigned int rando
 
         if (verbose) std::cerr << "Initialization done." << std::endl;
 
+#if HAVE_HIGHGUI
         if (verbose_visualize) {
             auto visualize_size = m_initial.size();
             cv::Mat source_visualize(visualize_size, m_initial.image().type());
@@ -97,6 +100,8 @@ cv::Mat Inpainting::run(bool verbose, bool verbose_visualize, unsigned int rando
             cv::imshow("Target", target_visualize);
             cv::waitKey(0);
         }
+#endif
+
 
         target = _expectation_maximization(source, target, level, verbose);
     }

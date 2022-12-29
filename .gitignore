@@ -5,3 +5,7 @@ __pycache__
 .scratch/
 *.dll
 *.so
+pypatchmatch.egg-info
+patchmatch/.idea
+project.xcworkspace
+xcuserdata

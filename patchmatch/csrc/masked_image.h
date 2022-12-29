@@ -19,9 +19,13 @@ public:
         // pass
     }
     MaskedImage(int width, int height) : m_global_mask(), m_image_grady(), m_image_gradx() {
+//        m_image = matMakeImage(width, height, 3);
+//        matClear(m_mask);
         m_image = cv::Mat(cv::Size(width, height), CV_8UC3);
         m_image = cv::Scalar::all(0);
 
+//        m_image = matMakeImage(width, height, 1);
+//        matClear(m_mask);
         m_mask = cv::Mat(cv::Size(width, height), CV_8U);
         m_mask = cv::Scalar::all(0);
     }
